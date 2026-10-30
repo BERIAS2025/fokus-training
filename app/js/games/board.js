@@ -24,12 +24,14 @@ export function boardCycle(R, opts) {
     board.extras.forEach(x => R.field.appendChild(x));
     // Von links nach rechts einblenden: der Blick startet links
     const sorted = [...built.items].sort((a, b) => a.x - b.x);
+    const step = Math.min(70, 1200 / sorted.length);
     sorted.forEach((it, i) => {
       it.el.style.opacity = '0';
+      it.el.dataset.t = it.target ? '1' : '0';
       R.field.appendChild(it.el);
       const entry = { ...it, tg: null };
       board.entries.push(entry);
-      R.after(i * 70, () => {
+      R.after(i * step, () => {
         it.el.style.transition = 'opacity .35s ease, background .3s, color .3s';
         it.el.style.opacity = '1';
         if (it.target) entry.tg = R.present(it.x, it.y);
