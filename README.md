@@ -1,25 +1,58 @@
-# CODING AGENTS: READ THIS FIRST
+# Fokus-Training
 
-This is a **handoff bundle** from Claude Design (claude.ai/design).
+Tablet-App (PWA) für tägliches Fokus-Training bei linksseitigem Neglect. Läuft nach der Installation komplett offline, alle Daten bleiben auf dem Tablet. Kein Medizinprodukt, ersetzt keine Therapie.
 
-A user mocked up designs in HTML/CSS/JS using an AI design tool, then exported this bundle so a coding agent can implement the designs for real.
+Ziel-Gerät: Samsung Galaxy Tab A11+, Chrome, Querformat. Layout ist auf 1280 × 800 dp gebaut und skaliert auf jede Bildschirmgröße.
 
-## What you should do — IMPORTANT
+## Auf dem Tablet installieren
 
-**Read the chat transcripts first.** There are 1 chat transcript(s) in `chats/`. The transcripts show the full back-and-forth between the user and the design assistant — they tell you **what the user actually wants** and **where they landed** after iterating. Don't skip them. The final HTML files are the output, but the chat is where the intent lives.
+1. In Chrome die GitHub-Pages-Adresse öffnen (`https://<name>.github.io/fokus-training/`).
+2. Einmal komplett laden lassen (danach ist alles offline gespeichert).
+3. Chrome-Menü > **Zum Startbildschirm hinzufügen** > Installieren.
+4. App vom Startbildschirm öffnen. Sie startet im Vollbild, Querformat, Bildschirm bleibt an.
+5. Pflege-Bereich (Zahnrad oben rechts 3 Sekunden halten) > Einstellungen > **Speicher** antippen, damit Android die Daten nie löscht.
 
-**Read `project/Fokus-Training Bildschirme.dc.html` in full.** The user had this file open when they triggered the handoff, so it's almost certainly the primary design they want built. Read it top to bottom — don't skim. Then **follow its imports**: open every file it pulls in (shared components, CSS, scripts) so you understand how the pieces fit together before you start implementing.
+**Updates:** Jeder Push auf `main` wird automatisch veröffentlicht. Das Tablet holt das Update beim nächsten Start mit Internet und wendet es an, sobald Conny auf dem Startbildschirm ist (nie mitten im Spiel).
 
-**If anything is ambiguous, ask the user to confirm before you start implementing.** It's much cheaper to clarify scope up front than to build the wrong thing.
+## Aufbau
 
-## About the design files
+| Pfad | Inhalt |
+| --- | --- |
+| `app/config.json` | **Alle Stufenwerte und Zeiten.** Einzige Datei, die Therapeuten anpassen müssen. |
+| `app/js/games/` | Die sechs Spiele, `common.js` (Spielzeit, Messung, Zufallsregeln), `board.js` (Such-Bretter) |
+| `app/js/screens/` | Bildschirme: `basic.js` (Start, Müdigkeit, Ergebnis, Ruhebild), `game.js` (Spiel + Pause), `care.js` (Pflege-Bereich), `history.js` (Therapeuten-Verlauf) |
+| `app/js/state.js` | Einstellungen, Tagesplan, Empfehlungs-Regel |
+| `app/js/export.js` | CSV, Sicherung (JSON), PDF-Bericht über die Druckansicht |
+| `app/sw.js` | Offline-Cache. Neue Dateien hier eintragen (`node tools/check-precache.cjs` prüft das). |
+| `design/` | Original-Design aus Claude Design und das Handover |
 
-The design medium is **HTML/CSS/JS** — these are prototypes, not production code. Your job is to **recreate them pixel-perfectly** in whatever technology makes sense for the target codebase (React, Vue, native, whatever fits). Match the visual output; don't copy the prototype's internal structure unless it happens to fit.
+Vanilla JavaScript ohne Build-Schritt, keine Abhängigkeiten, keine Drittanbieter-Skripte. Schrift (Atkinson Hyperlegible) und Töne (Web Audio) sind lokal.
 
-**Don't render these files in a browser or take screenshots unless the user asks you to.** Everything you need — dimensions, colors, layout rules — is spelled out in the source. Read the HTML and CSS directly; a screenshot won't tell you anything they don't.
+## Daten
 
-## Bundle contents
+- Gespeichert in IndexedDB auf dem Tablet. Kein Konto, kein Server, keine Übertragung.
+- Pro Runde: Datum, Spiel, Stufe, Dauer, Trefferquote gesamt und je Bildschirmdrittel, verpasste Ziele, Reaktionszeiten, Fehltreffer, Müdigkeit vorher/nachher, Pausen, Abbrüche, Links-Hilfe, Anker.
+- Export im Pflege-Bereich: Verlauf > **CSV** oder **Bericht** (Drucken > Als PDF speichern). Einstellungen > **Sicherung** speichert alles als JSON (auch zum Umzug auf ein neues Tablet).
 
-- `README.md` — this file
-- `chats/` — conversation transcripts (read these!)
-- `project/` — the `Fokus Training screen designs` project files (HTML prototypes, assets, components)
+## Empfehlungs-Regel
+
+Letzte 3 Runden eines Spiels auf der eingestellten Stufe:
+
+- Trefferquote ≥ 85 % und Müdigkeit nachher höchstens „mittel“: grüner Pfeil hoch
+- Trefferquote < 60 % oder zweimal „müde“: blauer Pfeil runter
+- sonst: gelb, Stufe halten
+
+Die App ändert die Stufe nie selbst. Innerhalb einer Runde wird nur das Tempo bei Fehlern sanft verlangsamt.
+
+## Lokal testen
+
+```bash
+cd app && python3 -m http.server 8123
+# http://localhost:8123 öffnen (Service Worker läuft nur über http(s), nicht file://)
+```
+
+In der Browser-Konsole ist `fokus.state` erreichbar (Einstellungen, Verlauf), z. B. für Fernwartung.
+
+## Deploy (GitHub Pages)
+
+Einmalig im Repo: **Settings > Pages > Source: GitHub Actions**. Danach veröffentlicht `.github/workflows/pages.yml` den Ordner `app/` bei jedem Push auf `main`.

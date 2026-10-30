@@ -123,10 +123,10 @@ button { font: inherit; color: inherit; border: none; background: none; padding:
 .home-slot { position: absolute; left: var(--anchor-w); right: 0; bottom: 40px; display: flex; justify-content: center; }
 
 /* ---------- Start ---------- */
-.theme-toggle { position: absolute; left: calc(var(--anchor-w) + 32px); top: 32px; display: flex; gap: 8px; background: var(--surface); border: 2px solid var(--line); border-radius: 999px; padding: 8px; }
+.theme-toggle { position: absolute; z-index: 3; left: calc(var(--anchor-w) + 32px); top: 32px; display: flex; gap: 8px; background: var(--surface); border: 2px solid var(--line); border-radius: 999px; padding: 8px; }
 .theme-toggle button { width: 72px; height: 72px; border-radius: 999px; display: flex; align-items: center; justify-content: center; color: var(--ink-3); }
 .theme-toggle button.on { background: var(--ink); color: var(--surface); }
-.gear { position: absolute; right: 40px; top: 40px; width: 64px; height: 64px; border-radius: 999px; display: flex; align-items: center; justify-content: center; border: 2px solid var(--line); color: var(--faint); }
+.gear { position: absolute; z-index: 3; right: 40px; top: 40px; width: 64px; height: 64px; border-radius: 999px; display: flex; align-items: center; justify-content: center; border: 2px solid var(--line); color: var(--faint); }
 .gear .hold-ring { position: absolute; inset: -8px; pointer-events: none; }
 .gear .hold-ring circle { fill: none; stroke: var(--blue); stroke-width: 5; stroke-dasharray: 251; stroke-dashoffset: 251; transform: rotate(-90deg); transform-origin: center; }
 .gear.holding .hold-ring circle { transition: stroke-dashoffset 3s linear; stroke-dashoffset: 0; }
