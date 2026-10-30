@@ -284,7 +284,7 @@ input[type=date] { font: inherit; font-size: 20px; height: 60px; border-radius: 
   @page { size: A4 portrait; margin: 14mm; }
   html, body { height: auto; overflow: visible; background: #fff; color: #111; }
   #viewport { display: none !important; }
-  #print { display: block; font-family: var(--font); color: #111; }
+  #print { display: block; font-family: var(--font); color: #111; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   #print h1 { font-size: 22pt; margin: 0 0 4pt; }
   #print h2 { font-size: 14pt; margin: 14pt 0 6pt; break-after: avoid; }
   #print .sec { break-inside: avoid; }
