@@ -1,0 +1,79 @@
+{
+  "_hinweis": "Startwerte fuer alle Spiele und Ablaeufe. Therapeuten koennen die Zahlen hier anpassen. Jede Liste hat 8 Eintraege: Stufe 1 (leicht) bis Stufe 8 (schwer).",
+
+  "session": {
+    "roundSeconds": 150,
+    "pauseAfterSeconds": 180,
+    "pauseMinSeconds": 30,
+    "breathCycleSeconds": 10,
+    "dailyLimitMinutes": 30,
+    "shortRoundFactor": 0.6,
+    "shortMaxGames": 2,
+    "shortLevelDrop": 1,
+    "idleHintSeconds": 8,
+    "errorsBeforeHint": 3,
+    "slowDownStep": 0.15,
+    "slowDownMax": 1.6
+  },
+
+  "recommendation": {
+    "lastSessions": 3,
+    "upMinRate": 0.85,
+    "holdMinRate": 0.6,
+    "downTiredCount": 2,
+    "masteredMinRate": 0.85,
+    "masteredSessions": 2
+  },
+
+  "flowers": [0.4, 0.6, 0.75, 0.9],
+
+  "linksHilfe": {
+    "sizeBoost":   [0.35, 0.30, 0.25, 0.20, 0.15, 0.10, 0.06, 0.0],
+    "haloAlpha":   [0.30, 0.26, 0.22, 0.18, 0.14, 0.10, 0.06, 0.0]
+  },
+
+  "games": {
+    "sterne": {
+      "count":       [4, 6, 8, 10, 12, 14, 17, 20],
+      "size":        [150, 130, 115, 100, 88, 76, 68, 60],
+      "leftShare":   [0.75, 0.7, 0.65, 0.6, 0.55, 0.5, 0.5, 0.5],
+      "guideLine":   [true, true, false, false, false, false, false, false],
+      "boardSeconds":[45, 45, 45, 50, 50, 55, 60, 60]
+    },
+    "blick": {
+      "speed":       [110, 140, 170, 200, 240, 280, 320, 360],
+      "ball":        [140, 125, 110, 100, 90, 80, 70, 60],
+      "amplitude":   [0, 0, 40, 70, 100, 120, 140, 160],
+      "waves":       [0, 0, 0.5, 1, 1, 1.5, 2, 2.5],
+      "diagonal":    [false, false, false, true, true, true, true, true],
+      "showPath":    [true, true, true, false, false, false, false, false],
+      "tapSeconds":  [8, 8, 7, 7, 6, 6, 6, 6]
+    },
+    "finden": {
+      "targets":     [3, 4, 6, 8, 9, 11, 13, 15],
+      "distractors": [6, 9, 12, 16, 22, 28, 34, 40],
+      "similarity":  [0, 0, 1, 1, 1, 2, 2, 2],
+      "size":        [120, 110, 96, 86, 76, 68, 62, 58],
+      "boardSeconds":[45, 45, 50, 55, 60, 60, 70, 75]
+    },
+    "paare": {
+      "pairs":       [3, 4, 5, 6, 6, 8, 9, 10],
+      "flipBackMs":  [1600, 1500, 1400, 1300, 1200, 1100, 1000, 1000]
+    },
+    "folge": {
+      "length":      [2, 3, 3, 4, 5, 5, 6, 7],
+      "fields":      [4, 4, 4, 5, 5, 6, 6, 6],
+      "scattered":   [false, false, false, false, true, true, true, true],
+      "showMs":      [1000, 950, 900, 850, 800, 750, 700, 650],
+      "gapMs":       [450, 420, 400, 380, 350, 330, 310, 300]
+    },
+    "nur": {
+      "showMs":      [2600, 2400, 2200, 2000, 1800, 1600, 1350, 1100],
+      "gapMs":       [900, 850, 800, 750, 700, 650, 600, 550],
+      "size":        [230, 210, 190, 170, 155, 140, 130, 120],
+      "targetShare": [0.4, 0.4, 0.38, 0.36, 0.35, 0.33, 0.32, 0.3],
+      "similarity":  [0, 0, 1, 1, 1, 2, 2, 2],
+      "switchEvery": [0, 0, 0, 0, 0, 14, 11, 8]
+    }
+  }
+}
