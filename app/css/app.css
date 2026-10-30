@@ -160,7 +160,7 @@ button { font: inherit; color: inherit; border: none; background: none; padding:
 .card { position: absolute; border-radius: 24px; background: var(--card-back); border: 3px solid var(--card-back-line); display: flex; align-items: center; justify-content: center; color: var(--ink); transition: background .2s, border-color .2s; }
 .card.open { background: var(--surface); border: 4px solid var(--ink); }
 .card.matched { background: var(--green-soft); border: 5px solid var(--green); color: var(--green); }
-.card.hint { animation: softPulse 1.6s ease-in-out infinite; }
+.pad.hint, .card.hint { animation: softPulse 1.6s ease-in-out infinite; }
 .card .face { display: none; }
 .card.open .face, .card.matched .face { display: block; animation: glowIn .2s ease-out; }
 .pad { position: absolute; border-radius: 32px; display: flex; align-items: center; justify-content: center; border: 4px solid rgba(0, 0, 0, .15); transition: box-shadow .25s ease, border-color .25s ease, filter .25s ease; }
