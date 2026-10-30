@@ -211,7 +211,7 @@ export class Runner {
     this.ended = true;
     cancelAnimationFrame(this._raf);
     this.field.removeEventListener('pointerdown', this._onDown);
-    if (this.impl.finish) this.impl.finish();
+    if (this.impl.finish) this.impl.finish(aborted);
     const Z = this.zones;
     const targets = Z.L.targets + Z.M.targets + Z.R.targets;
     const hits = Z.L.hits + Z.M.hits + Z.R.hits;
