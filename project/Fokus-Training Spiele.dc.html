@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#E4E0D7;font-family:'Atkinson Hyperlegible',sans-serif;color:#1F2430}
+a{color:#1B4FA8}a:hover{color:#123A80}
+</style>
+</helmet>
+<div style="padding:80px;display:flex;flex-direction:column;gap:72px">
+<div style="display:flex;flex-direction:column;gap:12px;max-width:960px">
+<div style="font-size:18px;letter-spacing:.12em;text-transform:uppercase;color:#5A606E;font-weight:700">Fokus-Training · Spielflächen · 1280 × 800 dp</div>
+<div style="font-size:56px;font-weight:700;line-height:1.05">Sechs Spiele · Stufe 1 und Stufe 8</div>
+<div style="font-size:22px;line-height:1.45;color:#3A404C;text-wrap:pretty">Links Stufe 1, rechts Stufe 8. Positionen werden bei jedem Laden neu erzeugt: links mindestens so viele Ziele wie rechts, auf Stufe 1 überwiegend links. Grün = getroffen (Form bleibt, nur Farbe + Leuchten). Links-Hilfe ist auf Stufe 1 an, auf Stufe 8 aus.</div>
+</div>
+<sc-for list="{{ rows }}" as="row" hint-placeholder-count="6">
+<section style="display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;align-items:baseline;gap:16px"><div style="font-size:32px;font-weight:700">{{ row.title }}</div><div style="font-size:20px;color:#5A606E">{{ row.trains }}</div></div>
+<div style="display:flex;flex-wrap:wrap;gap:64px">
+<sc-for list="{{ row.boards }}" as="b" hint-placeholder-count="2">
+<div id="{{ b.id }}" style="display:flex;flex-direction:column;gap:14px">
+<div style="display:flex;gap:12px;align-items:center"><div style="background:#1F2430;color:#fff;font-weight:700;font-size:18px;padding:6px 12px;border-radius:8px">{{ b.badge }}</div><div style="font-size:22px;font-weight:700">{{ b.level }}</div><div style="font-size:18px;color:#5A606E">{{ b.note }}</div></div>
+<div data-screen-label="{{ b.badge }}" style="width:1280px;height:800px;position:relative;overflow:hidden;border-radius:28px;background:#F3F0E9;box-shadow:0 30px 60px -20px rgba(30,30,40,.35)">
+<div style="position:absolute;left:0;top:0;bottom:0;width:112px;background:#E46E15;display:flex;align-items:center;justify-content:center"><svg width="44" height="64" viewBox="0 0 44 64"><path d="M6 4 L40 32 L6 60 Z" fill="#FFF6EC"></path></svg></div>
+<sc-for list="{{ b.items }}" as="it" hint-placeholder-count="0">
+<div style="position:absolute;left:{{ it.x }}px;top:{{ it.y }}px;width:{{ it.w }}px;height:{{ it.h }}px;background:{{ it.bg }};border:{{ it.border }};border-radius:{{ it.r }}px;box-shadow:{{ it.shadow }};box-sizing:border-box;display:flex;align-items:center;justify-content:center;gap:16px">
+<sc-if value="{{ it.shape }}">
+<svg width="{{ it.sz }}" height="{{ it.sz }}" viewBox="0 0 100 100" fill="{{ it.fill }}" stroke="{{ it.fill }}" stroke-width="0" stroke-linecap="round">
+<sc-if value="{{ it.star }}"><polygon points="50,6 61,38 95,38 68,58 79,92 50,72 21,92 32,58 5,38 39,38"></polygon></sc-if>
+<sc-if value="{{ it.sun8 }}"><g><circle cx="50" cy="50" r="22"></circle><path d="M50 4v14M50 82v14M4 50h14M82 50h14M17 17l10 10M73 73l10 10M83 17l-10 10M27 73l-10 10" stroke-width="8" fill="none"></path></g></sc-if>
+<sc-if value="{{ it.sun4 }}"><g><circle cx="50" cy="50" r="22"></circle><path d="M50 4v14M50 82v14M4 50h14M82 50h14" stroke-width="8" fill="none"></path></g></sc-if>
+<sc-if value="{{ it.sunO }}"><g><circle cx="50" cy="50" r="20" fill="none" stroke-width="8"></circle><path d="M50 4v14M50 82v14M4 50h14M82 50h14M17 17l10 10M73 73l10 10M83 17l-10 10M27 73l-10 10" stroke-width="8" fill="none"></path></g></sc-if>
+<sc-if value="{{ it.circle }}"><circle cx="50" cy="50" r="42"></circle></sc-if>
+<sc-if value="{{ it.square }}"><rect x="10" y="10" width="80" height="80" rx="12"></rect></sc-if>
+<sc-if value="{{ it.triangle }}"><polygon points="50,8 94,88 6,88"></polygon></sc-if>
+<sc-if value="{{ it.diamond }}"><polygon points="50,4 96,50 50,96 4,50"></polygon></sc-if>
+<sc-if value="{{ it.moon }}"><path d="M66 6a46 46 0 1 0 28 66A36 36 0 0 1 66 6z"></path></sc-if>
+<sc-if value="{{ it.cross }}"><path d="M38 6h24v32h32v24H62v32H38V62H6V38h32z"></path></sc-if>
+<sc-if value="{{ it.ring }}"><circle cx="50" cy="50" r="44" fill="none" stroke-width="6" stroke-dasharray="10 8"></circle></sc-if>
+</svg>
+</sc-if>
+<sc-if value="{{ it.text }}"><div style="font-size:{{ it.fs }}px;font-weight:700;color:#1F2430">{{ it.text }}</div></sc-if>
+</div>
+</sc-for>
+<div style="position:absolute;right:48px;top:40px;width:96px;height:96px;border-radius:999px;background:#FBFAF6;border:3px solid #D8D2C4;display:flex;align-items:center;justify-content:center;gap:12px"><div style="width:12px;height:36px;border-radius:4px;background:#1F2430"></div><div style="width:12px;height:36px;border-radius:4px;background:#1F2430"></div></div>
+</div>
+</div>
+</sc-for>
+</div>
+</section>
+</sc-for>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const INK = '#1F2430', HIT = '#1E7A45', SURF = '#FBFAF6', LINE = '#D8D2C4';
+const MID = 696;
+function rnd(a, b) { return a + Math.random() * (b - a); }
+function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function free(cx, cy, r) { return !(cx + r > 1110 && cy - r < 170); }
+// Scatter n points: leftShare = fraction on left half, min distance d, radius r
+function scatter(n, r, d, leftShare, yr) {
+  yr = yr || [90, 760];
+  const nl = Math.ceil(n * leftShare), out = [];
+  for (let k = 0; k < n; k++) {
+    const left = k < nl;
+    let best = null, bestD = -1;
+    for (let t = 0; t < 3000; t++) {
+      const cx = left ? rnd(112 + 40 + r, MID - 10) : rnd(MID + 10, 1280 - 40 - r);
+      const cy = rnd(yr[0] + r, yr[1] - r);
+      if (!free(cx, cy, r)) continue;
+      const md = out.reduce((m, p) => Math.min(m, Math.hypot(p.cx - cx, p.cy - cy)), 1e9);
+      if (md > bestD) { bestD = md; best = { cx, cy, left }; }
+      if (md >= d) break;
+    }
+    if (best) out.push(best);
+  }
+  return out;
+}
+// Jittered grid for dense boards; returns cells shuffled
+function grid(cols, rows, jit, x0, x1, y0, y1) {
+  const cw = (x1 - x0) / cols, ch = (y1 - y0) / rows, out = [];
+  for (let c = 0; c < cols; c++) for (let r = 0; r < rows; r++) {
+    const cx = x0 + cw * (c + .5) + rnd(-jit, jit) * cw, cy = y0 + ch * (r + .5) + rnd(-jit, jit) * ch;
+    if (free(cx, cy, 40)) out.push({ cx, cy, left: cx < MID });
+  }
+  return out;
+}
+function sym(kind, cx, cy, sz, fill, opts) {
+  const pad = (opts && opts.pad) || 0, w = sz + pad * 2;
+  return Object.assign({ x: Math.round(cx - w / 2), y: Math.round(cy - w / 2), w: Math.round(w), h: Math.round(w), r: 999, bg: 'transparent', border: 'none', shadow: 'none', shape: true, sz: Math.round(sz), fill, text: '', fs: 0, [kind]: true }, opts || {});
+}
+function hit(kind, cx, cy, sz) { return sym(kind, cx, cy, sz, HIT, { pad: 20, bg: 'rgba(30,122,69,.14)' }); }
+function box(x, y, w, h, o) { return Object.assign({ x: Math.round(x), y: Math.round(y), w: Math.round(w), h: Math.round(h), r: 24, bg: SURF, border: '3px solid ' + LINE, shadow: 'none', shape: false, sz: 0, fill: INK, text: '', fs: 0 }, o || {}); }
+
+function sterne(lv) {
+  const items = [];
+  if (lv === 1) {
+    const pts = scatter(4, 90, 230, .75, [150, 720]);
+    const ly = Math.round(pts.reduce((s, p) => s + p.cy, 0) / pts.length);
+    items.push(box(112, ly - 3, 1168, 6, { r: 0, border: 'none', bg: 'repeating-linear-gradient(90deg,#E9B21C 0 24px,transparent 24px 44px)' }));
+    pts.forEach((p, i) => { const s = p.left ? 150 : 120; items.push(p.left && i === 0 ? hit('star', p.cx, p.cy, s) : sym('star', p.cx, p.cy, s, INK)); });
+  } else {
+    const pts = scatter(20, 34, 118, .5);
+    const sorted = [...pts].sort((a, b) => a.cx - b.cx);
+    pts.forEach(p => items.push(sorted.indexOf(p) < 5 ? hit('star', p.cx, p.cy, 60) : sym('star', p.cx, p.cy, 60, INK)));
+  }
+  return items;
+}
+function blick(lv) {
+  const items = [];
+  const y0 = lv === 1 ? 400 : rnd(330, 470), amp = lv === 1 ? 0 : 150, ballX = lv === 1 ? 820 : 700;
+  const fy = x => y0 + amp * Math.sin((x - 200) / 160);
+  for (let x = 1210; x > ballX + 60; x -= 34) items.push(sym('circle', x, fy(x), 12, '#B9B2A3'));
+  const endX = 230;
+  items.push(sym('ring', endX, fy(endX), lv === 1 ? 190 : 120, '#1B4FA8'));
+  for (let x = ballX - 70; x > endX + 80; x -= 60) items.push(sym('circle', x, fy(x), 8, '#D8D2C4'));
+  const s = lv === 1 ? 140 : 70;
+  items.push(sym('circle', ballX, fy(ballX), s, INK, { pad: 16, bg: 'rgba(31,36,48,.08)' }));
+  return items;
+}
+function finden(lv) {
+  const items = [];
+  if (lv === 1) {
+    const pts = shuffle(scatter(9, 70, 190, .56, [170, 760]));
+    let suns = 0, leftSun = false;
+    pts.forEach(p => {
+      if (suns < 3 && (suns < 2 ? p.left : true)) {
+        suns++; if (!leftSun && p.left) { leftSun = true; items.push(hit('sun8', p.cx, p.cy, 120)); } else items.push(sym('sun8', p.cx, p.cy, 120, INK));
+      } else items.push(sym(Math.random() < .5 ? 'square' : 'triangle', p.cx, p.cy, 100, '#5A606E'));
+    });
+    items.push(box(MID - 150, 32, 300, 104, { r: 52, text: '1 / 3', fs: 44, shape: true, sz: 56, fill: INK, sun8: true }));
+  } else {
+    const cells = shuffle(grid(11, 5, .22, 160, 1250, 170, 770)).slice(0, 55);
+    const left = cells.filter(c => c.left), right = cells.filter(c => !c.left);
+    const targets = new Set([...left.slice(0, 8), ...right.slice(0, 7)]);
+    let hits = 0;
+    cells.forEach(c => {
+      if (targets.has(c)) { if (c.left && hits < 4) { hits++; items.push(hit('sun8', c.cx, c.cy, 58)); } else items.push(sym('sun8', c.cx, c.cy, 58, INK)); }
+      else items.push(sym(Math.random() < .5 ? 'sun4' : 'sunO', c.cx, c.cy, 58, INK));
+    });
+    items.push(box(MID - 150, 32, 300, 104, { r: 52, text: '4 / 15', fs: 44, shape: true, sz: 56, fill: INK, sun8: true }));
+  }
+  return items;
+}
+function paare(lv) {
+  const items = [];
+  const kinds = ['star', 'moon', 'triangle', 'diamond', 'cross', 'circle', 'square', 'sun8', 'sun4', 'ring'];
+  const n = lv === 1 ? 3 : 10, w = lv === 1 ? 210 : 112, h = lv === 1 ? 260 : 124;
+  const cells = lv === 1 ? scatter(6, 135, 270, .5, [40, 780]) : shuffle(grid(6, 4, .08, 170, 1250, 150, 780));
+  const faces = shuffle([...kinds.slice(0, n), ...kinds.slice(0, n)]);
+  const up = lv === 1 ? [0] : [];
+  if (lv === 8) { const a = faces.indexOf(faces[0]), b = faces.lastIndexOf(faces[0]); up.push(a, b); }
+  cells.slice(0, n * 2).forEach((c, i) => {
+    const open = up.includes(i), matched = lv === 8 && open;
+    items.push(box(c.cx - w / 2, c.cy - h / 2, w, h, open
+      ? { bg: matched ? '#E3F1E8' : SURF, border: (matched ? '5px solid ' + HIT : '4px solid ' + INK), shape: true, sz: w * .55, fill: matched ? HIT : INK, [faces[i]]: true }
+      : { bg: '#D9E0EC', border: '3px solid #9AA8C0' }));
+  });
+  return items;
+}
+function folge(lv) {
+  const items = [];
+  const cols = lv === 1
+    ? [['#1B4FA8', 'circle', '#fff'], ['#1E7A45', 'triangle', '#fff'], ['#E9B21C', 'square', INK], ['#6B3FA0', 'diamond', '#fff']]
+    : [['#1B4FA8', 'circle', '#fff'], ['#1E7A45', 'triangle', '#fff'], ['#E9B21C', 'square', INK], ['#6B3FA0', 'diamond', '#fff'], ['#0F6E74', 'star', '#fff'], ['#8A5A2B', 'cross', '#fff']];
+  const s = lv === 1 ? 230 : 170;
+  const pts = lv === 1 ? [{ cx: 470, cy: 300 }, { cx: 740, cy: 300 }, { cx: 470, cy: 570 }, { cx: 740, cy: 570 }] : scatter(6, 100, 260, .5, [180, 780]);
+  const lit = Math.floor(Math.random() * cols.length);
+  shuffle(cols).forEach((c, i) => {
+    const p = pts[i], on = i === lit;
+    items.push(box(p.cx - s / 2, p.cy - s / 2, s, s, { r: 32, bg: c[0], border: on ? '10px solid #FFFFFF' : '4px solid rgba(0,0,0,.15)', shadow: on ? '0 0 0 10px ' + c[0] + ', 0 0 60px 20px rgba(255,236,180,.9)' : 'none', shape: true, sz: s * .42, fill: c[2], [c[1]]: true }));
+  });
+  const len = lv === 1 ? 2 : 7, dot = lv === 1 ? 36 : 28, gap = 20, tw = len * dot + (len - 1) * gap;
+  for (let i = 0; i < len; i++) items.push(box(MID - tw / 2 + i * (dot + gap), 66, dot, dot, { r: 999, bg: i < 1 ? INK : 'transparent', border: '4px solid ' + INK }));
+  return items;
+}
+function nur(lv) {
+  const items = [];
+  if (lv === 1) {
+    items.push(box(MID - 110, 32, 220, 120, { r: 28, border: '4px solid ' + INK, shape: true, sz: 80, fill: INK, star: true }));
+    items.push(sym('star', rnd(330, 560), rnd(380, 520), 230, INK));
+  } else {
+    items.push(box(MID - 110, 32, 220, 120, { r: 28, bg: '#FBF1D0', border: '6px solid #E9B21C', shape: true, sz: 80, fill: INK, diamond: true }));
+    const k = ['circle', 'triangle', 'square', 'star'][Math.floor(Math.random() * 4)];
+    items.push(sym(k, rnd(820, 1100), rnd(320, 680), 120, INK));
+  }
+  return items;
+}
+const GAMES = [
+  ['1 · Sterne suchen', 'Visuelles Absuchen', sterne, ['4 große Sterne, überwiegend links, gelbe Hilfslinie', '20 kleine Sterne, gleich verteilt, keine Hilfe']],
+  ['2 · Blick folgen', 'Augenfolgebewegung', blick, ['Langsam, große Kugel, gerader Pfad → Ziel-Ring links', 'Schneller, kleine Kugel, Kurvenpfad']],
+  ['3 · Finden und zählen', 'Selektive Aufmerksamkeit', finden, ['3 Sonnen, 6 deutlich andere Ablenker, Zähler oben', '15 Sonnen, 40 ähnliche Ablenker (4 Strahlen / hohl)']],
+  ['4 · Paare finden', 'Arbeitsgedächtnis', paare, ['3 Paare, große Karten, eine aufgedeckt', '10 Paare über das ganze Feld, ein Paar gefunden']],
+  ['5 · Folge merken', 'Sequenzgedächtnis', folge, ['4 Felder, Folge von 2 (Punkte oben), eines leuchtet', '6 verstreute Felder, Folge von 7']],
+  ['6 · Nur dieses', 'Daueraufmerksamkeit', nur, ['Ziel oben gezeigt, ein großes Symbol links, langsam', 'Ziel hat gewechselt (gelber Rahmen), kleines Symbol, schnell']]
+];
+class Component extends DCLogic {
+  renderVals() {
+    if (!this.rows) this.rows = GAMES.map((g, gi) => ({
+      title: g[0], trains: g[1],
+      boards: [1, 8].map((lv, li) => ({ id: 'g' + (gi + 1) + '-' + lv, badge: (gi + 1) + '.' + lv, level: 'Stufe ' + lv, note: g[3][li], items: g[2](lv) }))
+    }));
+    return { rows: this.rows };
+  }
+}
+</script>
+</body>
+</html>
