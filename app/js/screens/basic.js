@@ -4,9 +4,11 @@ import { ICON, gameIcon, face, flower } from '../icons.js';
 import { state, GAMES, doneToday, nextGame, limitReached, saveSettings, flowersFor } from '../state.js';
 import * as flow from '../flow.js';
 import { triad, say, sunsetSound, unlockAudio } from '../audio.js';
-import { enterFullscreen } from '../system.js';
+import { keepAwake, canInstall, isInstalled, promptInstall, closeApp } from '../system.js';
 
 const gearHTML = () => `<button class="gear" data-gear aria-label="Pflege">${ICON.gear(32)}<svg class="hold-ring" viewBox="0 0 80 80"><circle cx="40" cy="40" r="38"/></svg></button>`;
+
+const exitHTML = () => `<button class="exit-btn" data-act="exit" aria-label="Beenden">${ICON.close(44)}</button>`;
 
 function wireGear(el) {
   const g = el.querySelector('[data-gear]');
@@ -27,6 +29,8 @@ register('start', el => {
       <button data-act="dark" class="${s.theme === 'dark' ? 'on' : ''}" aria-label="Dunkel">${ICON.moon(36)}</button>
     </div>
     ${gearHTML()}
+    ${exitHTML()}
+    ${canInstall() && !isInstalled() ? `<div class="install-slot"><button class="install-chip" data-act="install">${ICON.download(32)}<span>App installieren</span></button></div>` : ''}
     <div class="content center-col" style="gap:72px;padding-top:40px">
       <button class="btn btn-primary btn-los" data-act="los">${ICON.play(64)}<span>Los</span></button>
       <div class="tiles">
@@ -39,12 +43,42 @@ register('start', el => {
       </div>
     </div>`;
   wireGear(el);
-  return onAct(el, {
-    los: () => { unlockAudio(); enterFullscreen(); flow.startPlan(); },
-    single: t => { unlockAudio(); enterFullscreen(); go('single', { game: t.dataset.game }); },
+  const rerender = () => go('start');
+  window.addEventListener('fokus-installable', rerender);
+  const off = onAct(el, {
+    exit: () => go('bye'),
+    install: async () => { await promptInstall(); go('start'); },
+    los: () => { unlockAudio(); keepAwake(); flow.startPlan(); },
+    single: t => { unlockAudio(); keepAwake(); go('single', { game: t.dataset.game }); },
     light: () => { s.theme = 'light'; saveSettings(); applyTheme(); go('start'); },
     dark: () => { s.theme = 'dark'; saveSettings(); applyTheme(); go('start'); }
   });
+  return () => { off(); window.removeEventListener('fokus-installable', rerender); };
+});
+
+// ---------- Beenden ----------
+register('bye', el => {
+  el.innerHTML = `
+    ${anchorHTML()}
+    <div class="content center-col" style="gap:36px;padding-bottom:40px">
+      <div style="color:var(--ink)">${ICON.sunset(200)}</div>
+      <div style="font-size:64px;font-weight:700">Auf Wiedersehen!</div>
+      <div data-hint style="display:flex;flex-direction:column;align-items:center;gap:16px;opacity:0;transition:opacity .6s">
+        <div style="font-size:36px;font-weight:700;color:var(--ink-2);text-align:center;max-width:860px">Zum Schließen unten am Tablet auf den Home&#8209;Knopf tippen.</div>
+      </div>
+      <button class="btn btn-secondary btn-pill" style="width:320px;height:112px;font-size:40px" data-act="home">${ICON.restore(40)}<span>Zurück</span></button>
+    </div>
+    <div data-arrow style="position:absolute;left:50%;bottom:0;margin-left:-28px;opacity:0;transition:opacity .6s;color:var(--blue)">
+      <svg width="56" height="24" viewBox="0 0 56 24"><path d="M4 4 L28 22 L52 4" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>`;
+  say('Auf Wiedersehen');
+  const t = setTimeout(() => {
+    closeApp();
+    el.querySelector('[data-hint]').style.opacity = '1';
+    el.querySelector('[data-arrow]').style.opacity = '1';
+  }, 900);
+  const off = onAct(el, { home: () => go('start') });
+  return () => { off(); clearTimeout(t); };
 });
 
 // ---------- 1b Einzelspiel ----------
@@ -106,7 +140,7 @@ register('tired', el => {
 register('rest', (el, { limit }) => {
   el.innerHTML = `
     ${anchorHTML()}
-    ${limit ? gearHTML() : ''}
+    ${limit ? gearHTML() + exitHTML() : ''}
     <div class="content center-col" style="gap:40px;padding-bottom:120px">
       <div style="color:var(--ink);animation:sink 2.4s ease-out both">${ICON.sunset(360)}</div>
     </div>
@@ -114,7 +148,7 @@ register('rest', (el, { limit }) => {
   sunsetSound();
   say('Für heute genug. Gut gemacht.');
   if (limit) wireGear(el);
-  return onAct(el, { home: () => go('start') });
+  return onAct(el, { home: () => go('start'), exit: () => go('bye') });
 });
 
 // ---------- 5 Ergebnis ----------

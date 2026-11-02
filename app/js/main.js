@@ -4,6 +4,7 @@ import { requestPersistence } from './db.js';
 import { initSystem, keepAwake } from './system.js';
 import './screens/basic.js';
 import './screens/game.js';
+import './screens/intro.js';
 import './screens/care.js';
 
 async function boot() {

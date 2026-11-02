@@ -21,7 +21,7 @@ export default function finden(R) {
     boardSeconds: () => R.p('boardSeconds'),
     build() {
       const nT = R.p('targets'), nD = R.p('distractors'), size = R.p('size'), sim = R.p('similarity');
-      kind = R.level >= 3 ? pick(['sun8', 'star']) : 'sun8';
+      kind = R.target || 'sun8';
       const n = nT + nD;
       const nl = leftCount('finden', nT, 0.6);
       const b = bounds();

@@ -5,6 +5,7 @@ import { state, GAMES, gameName, saveSettings, recommend, masteredLevels, gameRe
 import { hitSound, unlockAudio } from '../audio.js';
 import { isPersisted, requestPersistence } from '../db.js';
 import { renderHistory } from './history.js';
+import { canInstall, isInstalled, promptInstall } from '../system.js';
 import { exportBackup, importBackup } from '../export.js';
 
 const REC = {
@@ -132,6 +133,8 @@ register('care', el => {
           ${toggle('showTimer', ICON.clock(32), 'Zeit anzeigen', s.showTimer, 'Dezenter Ring am Pause-Knopf')}
           <div class="set-item"><div class="ic">${ICON.shield(32)}</div><div class="lbl">Speicher<small data-persist>…</small></div>
             <button class="seg-btn" data-act="persist" style="height:72px;padding:0 18px;border-radius:20px;border:2px solid var(--line);background:var(--bg);font-size:20px;font-weight:700">${ICON.check(28, 4)}</button></div>
+          <div class="set-item"><div class="ic">${ICON.download(32)}</div><div class="lbl">App installieren<small>${isInstalled() ? 'Ist installiert' : canInstall() ? 'Auf den Startbildschirm legen' : 'In Chrome: Menü ⋮ > „App installieren“'}</small></div>
+            ${canInstall() && !isInstalled() ? `<button data-act="install" style="height:72px;padding:0 18px;border-radius:20px;border:2px solid var(--blue);background:var(--blue);color:var(--on-blue);display:flex;align-items:center">${ICON.download(28)}</button>` : ''}</div>
           <div class="set-item"><div class="ic">${ICON.download(32)}</div><div class="lbl">Sicherung<small>Alle Daten als Datei speichern</small></div>
             <div class="seg"><button data-act="backup">${ICON.download(28)}</button><button data-act="restoreFile">${ICON.upload(28)}</button></div></div>
           <div class="set-item"><div class="ic">${ICON.gear(32)}</div><div class="lbl">Version<small>${buildId()} · ${state.records.length} Einheiten gespeichert</small></div></div>
@@ -181,6 +184,7 @@ register('care', el => {
       commit();
     },
     persist: async () => { const ok = await requestPersistence(); toast(ok ? 'Dauerhaft gesichert' : 'Android hat noch nicht zugestimmt'); render(); },
+    install: async () => { await promptInstall(); render(); },
     backup: () => exportBackup(),
     restoreFile: () => el.querySelector('[data-file]').click()
   });

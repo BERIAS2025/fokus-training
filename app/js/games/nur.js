@@ -97,7 +97,7 @@ export default function nur(R) {
       box.className = 'target-box';
       box.style.left = (b.mid - 110) + 'px';
       R.field.appendChild(box);
-      setTarget(R.level >= 3 ? pick(Object.keys(SETS)) : 'star', false);
+      setTarget(R.target || 'star', false);
       R.after(1200, next);
     },
     hint() { if (box) { box.classList.add('hint'); box.style.animation = 'softPulse 1.6s ease-in-out 2'; R.after(3300, () => { box.style.animation = ''; }); } },

@@ -6,10 +6,12 @@ Ziel-Gerät: Samsung Galaxy Tab A11+, Chrome, Querformat. Layout ist auf 1280 ×
 
 ## Auf dem Tablet installieren
 
-1. In Chrome die GitHub-Pages-Adresse öffnen (`https://<name>.github.io/fokus-training/`).
-2. Einmal komplett laden lassen (danach ist alles offline gespeichert).
-3. Chrome-Menü > **Zum Startbildschirm hinzufügen** > Installieren.
-4. App vom Startbildschirm öffnen. Sie startet im Vollbild, Querformat, Bildschirm bleibt an.
+1. In **Chrome** (nicht Samsung Internet) https://berias2025.github.io/fokus-training/ öffnen.
+2. Oben auf dem Startbildschirm der App erscheint **App installieren**. Antippen und bestätigen.
+   Falls der Knopf fehlt: Chrome-Menü ⋮ > **App installieren** (oder „Zum Startbildschirm hinzufügen“).
+3. App vom Startbildschirm des Tablets öffnen. Querformat, Bildschirm bleibt an, Androids Home-Knopf bleibt sichtbar.
+
+**Beenden:** X oben rechts. Die App versucht sich zu schließen; klappt das nicht, zeigt sie den Hinweis auf den Home-Knopf des Tablets.
 5. Pflege-Bereich (Zahnrad oben rechts 3 Sekunden halten) > Einstellungen > **Speicher** antippen, damit Android die Daten nie löscht.
 
 **Updates:** Jeder Push auf `main` wird automatisch veröffentlicht. Das Tablet holt das Update beim nächsten Start mit Internet und wendet es an, sobald Conny auf dem Startbildschirm ist (nie mitten im Spiel).

@@ -126,7 +126,12 @@ button { font: inherit; color: inherit; border: none; background: none; padding:
 .theme-toggle { position: absolute; z-index: 3; left: calc(var(--anchor-w) + 32px); top: 32px; display: flex; gap: 8px; background: var(--surface); border: 2px solid var(--line); border-radius: 999px; padding: 8px; }
 .theme-toggle button { width: 72px; height: 72px; border-radius: 999px; display: flex; align-items: center; justify-content: center; color: var(--ink-3); }
 .theme-toggle button.on { background: var(--ink); color: var(--surface); }
-.gear { position: absolute; z-index: 3; right: 40px; top: 40px; width: 64px; height: 64px; border-radius: 999px; display: flex; align-items: center; justify-content: center; border: 2px solid var(--line); color: var(--faint); }
+.gear { position: absolute; z-index: 3; right: 164px; top: 48px; width: 64px; height: 64px; border-radius: 999px; display: flex; align-items: center; justify-content: center; border: 2px solid var(--line); color: var(--faint); }
+.exit-btn { position: absolute; z-index: 3; right: 40px; top: 32px; width: 96px; height: 96px; border-radius: 999px; background: var(--surface); border: 3px solid var(--line); display: flex; align-items: center; justify-content: center; color: var(--ink); }
+.exit-btn:active { transform: scale(.96); }
+.install-slot { position: absolute; z-index: 3; left: var(--anchor-w); right: 0; top: 40px; display: flex; justify-content: center; pointer-events: none; }
+.install-chip { pointer-events: auto; height: 80px; padding: 0 28px; border-radius: 40px; background: var(--blue-tint); border: 4px solid var(--blue); color: var(--blue-dark); display: flex; align-items: center; gap: 14px; font-size: 28px; font-weight: 700; }
+[data-theme="dark"] .install-chip { color: var(--ink); }
 .gear .hold-ring { position: absolute; inset: -8px; pointer-events: none; }
 .gear .hold-ring circle { fill: none; stroke: var(--blue); stroke-width: 5; stroke-dasharray: 251; stroke-dashoffset: 251; transform: rotate(-90deg); transform-origin: center; }
 .gear.holding .hold-ring circle { transition: stroke-dashoffset 3s linear; stroke-dashoffset: 0; }

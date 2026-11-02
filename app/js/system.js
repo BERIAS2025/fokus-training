@@ -13,17 +13,31 @@ export async function keepAwake() {
   } catch (e) { lock = null; }
 }
 
-export function enterFullscreen() {
-  keepAwake();
-  const d = document.documentElement;
-  if (!document.fullscreenElement && d.requestFullscreen && !matchMedia('(display-mode: fullscreen)').matches) {
-    d.requestFullscreen({ navigationUI: 'hide' }).then(() => {
-      if (screen.orientation && screen.orientation.lock) screen.orientation.lock('landscape').catch(() => {});
-    }).catch(() => {});
-  }
+// Installation: Chrome meldet, dass die App installiert werden kann
+let installEvent = null;
+export const canInstall = () => !!installEvent;
+export const isInstalled = () => matchMedia('(display-mode: standalone)').matches || matchMedia('(display-mode: fullscreen)').matches || navigator.standalone === true;
+export async function promptInstall() {
+  if (!installEvent) return false;
+  installEvent.prompt();
+  const r = await installEvent.userChoice.catch(() => null);
+  installEvent = null;
+  return r && r.outcome === 'accepted';
+}
+
+// App beenden: installierte Apps lassen sich per window.close() schließen.
+// Geht das nicht, bleibt der Hinweis auf den Home-Knopf von Android.
+export function closeApp() {
+  try { window.close(); } catch (e) { /* weiter mit Hinweis */ }
 }
 
 export function initSystem() {
+  window.addEventListener('beforeinstallprompt', e => {
+    e.preventDefault();
+    installEvent = e;
+    window.dispatchEvent(new Event('fokus-installable'));
+  });
+  window.addEventListener('appinstalled', () => { installEvent = null; window.dispatchEvent(new Event('fokus-installable')); });
   document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') keepAwake(); });
   // Keine Gesten, kein Kontextmenü, kein Zoom
   document.addEventListener('contextmenu', e => e.preventDefault());

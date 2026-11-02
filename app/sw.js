@@ -27,6 +27,7 @@ const FILES = [
   './js/export.js',
   './js/screens/basic.js',
   './js/screens/game.js',
+  './js/screens/intro.js',
   './js/screens/care.js',
   './js/screens/history.js',
   './js/games/index.js',

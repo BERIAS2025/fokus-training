@@ -81,6 +81,7 @@ export class Runner {
     this.tasks = [];
     this.frames = [];
     this.roundMs = hooks.roundMs;
+    this.target = hooks.target || null;   // Zielsymbol aus der Erklärung
     this.timeUp = false;
     this.zones = { L: z(), M: z(), R: z() };
     this.falseTaps = 0;

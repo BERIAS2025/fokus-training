@@ -7,7 +7,7 @@ import { GAME_IMPL } from '../games/index.js';
 import * as flow from '../flow.js';
 import { say, softTick } from '../audio.js';
 
-register('game', (el, { game, level }) => {
+register('game', (el, { game, level, target }) => {
   const showTimer = state.settings.showTimer;
   el.innerHTML = `
     <div class="field" data-field></div>
@@ -22,6 +22,7 @@ register('game', (el, { game, level }) => {
 
   const runner = new Runner(field, game, level, {
     roundMs,
+    target,
     onEnd: rec => flow.roundDone(rec),
     onAutoPause: () => openPause(true),
     onTick: f => { if (ring) ring.style.strokeDashoffset = String(339.3 * (1 - f)); }

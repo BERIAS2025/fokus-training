@@ -1,6 +1,7 @@
 // Ablauf einer Einheit: Start > Müdigkeit > Spiele > Ergebnis > Müdigkeit > Start
 import { state, planQueue, addRecord, updateRecord, recommend, cfg, saveSettings } from './state.js';
 import { go } from './ui.js';
+import { chooseTarget } from './screens/intro.js';
 
 export const unit = {
   id: null,
@@ -45,7 +46,10 @@ export function playCurrent() {
   if (!game) return finishUnit();
   let level = state.settings.levels[game] || 1;
   if (unit.short) level = Math.max(1, level - cfg().session.shortLevelDrop);
-  go('game', { game, level });
+  // Bei "Nochmal" gleiches Ziel, ohne erneute Erklärung
+  if (unit.again) { unit.again = false; return go('game', { game, level, target: unit.target }); }
+  unit.target = chooseTarget(game, level);
+  go('intro', { game, level, target: unit.target });
 }
 
 export async function roundDone(rec) {
@@ -68,6 +72,7 @@ export async function roundDone(rec) {
 
 export function again() {
   if (unit.ended) unit.ended = false;
+  unit.again = true;
   playCurrent();
 }
 
